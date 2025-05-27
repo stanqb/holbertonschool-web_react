@@ -19,6 +19,33 @@ interface Teacher {
     return `${firstName.charAt(0)}. ${lastName}`;
   };
   
+  interface StudentClassConstructor {
+    new (firstName: string, lastName: string): StudentClassInterface;
+  }
+  
+  interface StudentClassInterface {
+    workOnHomework(): string;
+    displayName(): string;
+  }
+  
+  class StudentClass implements StudentClassInterface {
+    private _firstName: string;
+    private _lastName: string;
+  
+    constructor(firstName: string, lastName: string) {
+      this._firstName = firstName;
+      this._lastName = lastName;
+    }
+  
+    workOnHomework(): string {
+      return "Currently working";
+    }
+  
+    displayName(): string {
+      return this._firstName;
+    }
+  }
+  
   const teacher3: Teacher = {
     firstName: 'John',
     fullTimeEmployee: false,
@@ -40,3 +67,7 @@ interface Teacher {
   console.log(director1);
   
   console.log(printTeacher("John", "Doe"));
+  
+  const student = new StudentClass("Jane", "Smith");
+  console.log(student.displayName());
+  console.log(student.workOnHomework());
