@@ -1,2 +1,5 @@
 node_modules/
 public/bundle.js
+public/*.LICENSE.txt
+public/*.jpg
+public/*.png
