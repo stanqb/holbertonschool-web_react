@@ -1,0 +1,8 @@
+.notification-items {
+  border: 3px dashed #e1003c;
+  padding: 8px 12px;
+}
+
+.notification-items p {
+  margin: 0;
+}

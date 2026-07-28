@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1a1a1a;
+}
+
+.App-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  border-bottom: 3px solid #e1003c;
+}
+
+.App-header img {
+  width: 200px;
+  height: auto;
+}
+
+.App-header h1 {
+  color: #e1003c;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.App-body {
+  padding: 30px 20px;
+  min-height: 45vh;
+}
+
+.App-footer {
+  border-top: 3px solid #e1003c;
+  padding: 15px 20px;
+  text-align: center;
+  font-style: italic;
+}
+
+.root-notifications {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
