@@ -1,0 +1,4 @@
+body > p:last-of-type {
+  font-style: italic;
+  color: #676767;
+}
