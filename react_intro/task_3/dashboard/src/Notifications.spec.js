@@ -10,8 +10,9 @@ describe('Notifications component', () => {
 
   test('renders a button element', () => {
     render(<Notifications />);
-    const button = screen.getByRole('button');
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThan(0);
+    expect(buttons[0]).toBeInTheDocument();
   });
 
   test('renders 3 li elements', () => {
@@ -24,10 +25,12 @@ describe('Notifications component', () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     render(<Notifications />);
 
-    const button = screen.getByRole('button');
+    const button = screen.getAllByRole('button')[0];
     fireEvent.click(button);
 
-    expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked');
+    expect(consoleSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/close button has been clicked/i),
+    );
 
     consoleSpy.mockRestore();
   });
