@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
-    "test": "jest src"
+    "test": "jest"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -42,11 +42,6 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>./setupTests.js"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[jt]s?(x)",
-      "**/*-test.[jt]s?(x)"
     ]
   }
 }
