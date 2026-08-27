@@ -1,4 +1,4 @@
-import closeIcon from '../assets/close-icon.svg';
+import closeButton from '../assets/close-button.png';
 import { getLatestNotification } from '../utils/utils';
 import './Notifications.css';
 
@@ -22,7 +22,7 @@ function Notifications() {
           cursor: 'pointer',
         }}
       >
-        <img src={closeIcon} alt="close icon" width="12" height="12" />
+        <img src={closeButton} alt="close icon" width="12" height="12" />
       </button>
       <p>Here is the list of notifications</p>
       <ul>
