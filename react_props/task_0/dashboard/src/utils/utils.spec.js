@@ -1,8 +1,8 @@
-import { getFullYear, getFooterCopy, getLatestNotification } from './utils';
+import { getCurrentYear, getFooterCopy, getLatestNotification } from './utils';
 
-describe('getFullYear', () => {
+describe('getCurrentYear', () => {
   test('returns the current year', () => {
-    expect(getFullYear()).toBe(new Date().getFullYear());
+    expect(getCurrentYear()).toBe(new Date().getFullYear());
   });
 });
 
