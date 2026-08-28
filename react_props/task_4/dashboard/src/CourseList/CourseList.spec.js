@@ -13,9 +13,15 @@ describe('CourseList component', () => {
     expect(screen.getAllByRole('row')).toHaveLength(5);
   });
 
-  test('renders 3 rows when the courses array is empty', () => {
+  test('renders 1 row when the courses array is empty', () => {
     render(<CourseList courses={[]} />);
+    expect(screen.getAllByRole('row')).toHaveLength(1);
     expect(screen.getByText('No course available yet')).toBeInTheDocument();
+  });
+
+  test('renders 1 row when no courses prop is given', () => {
+    render(<CourseList />);
+    expect(screen.getAllByRole('row')).toHaveLength(1);
   });
 
   test('renders the course names and credits', () => {

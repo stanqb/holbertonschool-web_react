@@ -2,6 +2,16 @@ import CourseListRow from './CourseListRow';
 import './CourseList.css';
 
 function CourseList({ courses = [] }) {
+  if (courses.length === 0) {
+    return (
+      <table id="CourseList">
+        <thead>
+          <CourseListRow textFirstCell="No course available yet" />
+        </thead>
+      </table>
+    );
+  }
+
   return (
     <table id="CourseList">
       <thead>
@@ -13,17 +23,13 @@ function CourseList({ courses = [] }) {
         />
       </thead>
       <tbody>
-        {courses.length === 0 ? (
-          <CourseListRow textFirstCell="No course available yet" />
-        ) : (
-          courses.map(({ id, name, credit }) => (
-            <CourseListRow
-              key={id}
-              textFirstCell={name}
-              textSecondCell={credit}
-            />
-          ))
-        )}
+        {courses.map(({ id, name, credit }) => (
+          <CourseListRow
+            key={id}
+            textFirstCell={name}
+            textSecondCell={credit}
+          />
+        ))}
       </tbody>
     </table>
   );
