@@ -5,7 +5,7 @@ import Notifications from './Notifications';
 const notifications = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: '<strong>Urgent requirement</strong>' },
+  { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong>' } },
 ];
 
 describe('Notifications component', () => {
@@ -21,13 +21,21 @@ describe('Notifications component', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  test('renders the three notification items', () => {
+  test('renders the three notification items with their texts', () => {
     render(<Notifications notifications={notifications} />);
     const items = screen.getAllByRole('listitem');
     expect(items).toHaveLength(3);
-    expect(items[0]).toHaveTextContent('New course available');
-    expect(items[1]).toHaveTextContent('New resume available');
-    expect(items[2]).toHaveTextContent('Urgent requirement');
+    expect(items[0]).toHaveTextContent(/new course available/i);
+    expect(items[1]).toHaveTextContent(/new resume available/i);
+    expect(items[2]).toHaveTextContent(/urgent requirement/i);
+  });
+
+  test('renders the three notification items with their styles', () => {
+    render(<Notifications notifications={notifications} />);
+    const items = screen.getAllByRole('listitem');
+    expect(items[0]).toHaveStyle({ color: 'blue' });
+    expect(items[1]).toHaveStyle({ color: 'red' });
+    expect(items[2]).toHaveStyle({ color: 'red' });
   });
 
   test('renders no item when the notifications prop is not given', () => {
