@@ -1,0 +1,16 @@
+.App-form {
+  margin-top: 15px;
+}
+
+.App-form label {
+  margin-right: 5px;
+}
+
+.App-form input {
+  margin-right: 15px;
+  padding: 3px 5px;
+}
+
+.App-form button {
+  padding: 3px 12px;
+}
