@@ -45,3 +45,13 @@ describe('App keyboard logout', () => {
     expect(alertSpy).toHaveBeenCalledWith('Logging you out');
   });
 });
+
+describe('App News from the School section', () => {
+  test('displays the News from the School title and paragraph by default', () => {
+    const { getByRole, getByText } = render(<App />);
+    expect(getByRole('heading', { name: /news from the school/i })).toBeInTheDocument();
+    const paragraph = getByText(/holberton school news goes here/i);
+    expect(paragraph).toBeInTheDocument();
+    expect(paragraph.tagName).toBe('P');
+  });
+});
