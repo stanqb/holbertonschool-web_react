@@ -93,3 +93,30 @@ describe('Notifications markAsRead', () => {
     expect(logSpy).toHaveBeenCalledWith('Notification 2 has been marked as read');
   });
 });
+
+describe('Notifications shouldComponentUpdate', () => {
+  test('does not re-render when the length of notifications stays the same', () => {
+    const initialList = [{ id: 1, type: 'default', value: 'First notification' }];
+    const sameLengthList = [{ id: 1, type: 'default', value: 'Updated notification' }];
+    const { rerender, getByText, queryByText } = render(
+      <Notifications displayDrawer={true} notifications={initialList} />,
+    );
+    rerender(<Notifications displayDrawer={true} notifications={sameLengthList} />);
+    expect(getByText('First notification')).toBeInTheDocument();
+    expect(queryByText('Updated notification')).not.toBeInTheDocument();
+  });
+
+  test('re-renders when the length of notifications changes', () => {
+    const initialList = [{ id: 1, type: 'default', value: 'First notification' }];
+    const longerList = [
+      { id: 1, type: 'default', value: 'First notification' },
+      { id: 2, type: 'urgent', value: 'Second notification' },
+    ];
+    const { rerender, getByText, getAllByRole } = render(
+      <Notifications displayDrawer={true} notifications={initialList} />,
+    );
+    rerender(<Notifications displayDrawer={true} notifications={longerList} />);
+    expect(getByText('Second notification')).toBeInTheDocument();
+    expect(getAllByRole('listitem')).toHaveLength(2);
+  });
+});
