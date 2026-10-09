@@ -23,12 +23,12 @@ class Notifications extends React.Component {
 
     return (
       <>
-        <div className="notification-title text-right mr-3">Your notifications</div>
+        <div className="notification-title text-right mr-3 mt-1">Your notifications</div>
         {displayDrawer && (
-          <div className="Notifications notification-items relative w-1/4 ml-auto mr-3 p-1.5 border-[3px] border-dashed border-[color:var(--main-color)]">
+          <div className="Notifications notification-items relative w-1/4 ml-auto mr-3 mt-1 p-1.5 border-[3px] border-dotted border-[color:var(--main-color)]">
             {notifications.length > 0 ? (
               <>
-                <p>Here is the list of notifications</p>
+                <p className="ml-0.5 mt-0.5">Here is the list of notifications</p>
                 <button
                   aria-label="Close"
                   className="absolute top-1.5 right-1.5 cursor-pointer"
@@ -36,7 +36,7 @@ class Notifications extends React.Component {
                 >
                   <img src={closeButton} alt="close icon" className="w-3 h-3" />
                 </button>
-                <ul className="list-[square] pl-5">
+                <ul className="list-[square] pl-5 ml-0.5 mb-0.5">
                   {notifications.map((notification) => (
                     <NotificationItem
                       key={notification.id}
@@ -50,7 +50,7 @@ class Notifications extends React.Component {
                 </ul>
               </>
             ) : (
-              <p>No new notification for now</p>
+              <p className="ml-0.5 my-0.5">No new notification for now</p>
             )}
           </div>
         )}

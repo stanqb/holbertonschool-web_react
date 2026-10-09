@@ -5,7 +5,7 @@ import BodySection from './BodySection';
 class BodySectionWithMarginBottom extends React.Component {
   render() {
     return (
-      <div className="bodySectionWithMargin mb-10">
+      <div className="bodySectionWithMargin mb-8">
         <BodySection {...this.props} />
       </div>
     );

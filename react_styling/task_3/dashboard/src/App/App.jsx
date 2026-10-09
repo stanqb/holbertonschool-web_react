@@ -46,11 +46,11 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn = false } = this.props;
 
     return (
       <>
-        <div className="root-notifications absolute top-0 right-0 w-full">
+        <div className="root-notifications absolute top-0 right-0 w-5/6">
           <Notifications notifications={notificationsList} displayDrawer={true} />
         </div>
         <Header />
@@ -78,7 +78,6 @@ App.propTypes = {
 };
 
 App.defaultProps = {
-  isLoggedIn: false,
   logOut: () => {},
 };
 
