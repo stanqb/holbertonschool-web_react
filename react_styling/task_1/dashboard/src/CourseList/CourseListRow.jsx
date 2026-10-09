@@ -1,5 +1,5 @@
-const headerRowClass = 'bg-table-header/66';
-const rowClass = 'bg-table-rows/45';
+const headerRowClass = 'bg-table-header opacity-66';
+const rowClass = 'bg-table-rows opacity-45';
 const cellClass = 'border border-gray-400';
 
 function CourseListRow({ isHeader = false, textFirstCell = '', textSecondCell = null }) {
