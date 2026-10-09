@@ -7,7 +7,7 @@ function CourseList({ courses = [] }) {
       {courses.length === 0 ? (
         <table id="CourseList" className="w-full">
           <thead>
-            <CourseListRow textFirstCell="No course available yet" />
+            <CourseListRow isHeader textFirstCell="No course available yet" />
           </thead>
         </table>
       ) : (
