@@ -1,0 +1,69 @@
+import NotificationItem from './NotificationItem';
+import { render, fireEvent, screen } from '@testing-library/react';
+import Notifications from './Notifications.jsx';
+import { getLatestNotification } from '../utils/utils';
+
+const notificationsList = [
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  {
+    id: 3,
+    type: 'urgent',
+    value: 'Urgent requirement - complete by EOD',
+    html: getLatestNotification(),
+  },
+];
+
+test('renders the notifications title', () => {
+  render(<Notifications displayDrawer notifications={notificationsList} />);
+  expect(
+    screen.getByText(/Here is the list of notifications/i),
+  ).toBeInTheDocument();
+});
+
+test('renders the close button', () => {
+  render(<Notifications displayDrawer notifications={notificationsList} />);
+  expect(screen.getByLabelText(/close/i)).toBeInTheDocument();
+});
+
+test('renders 3 notification items with the appropriate text and types', () => {
+  render(<Notifications displayDrawer notifications={notificationsList} />);
+  const items = screen.getAllByRole('listitem');
+
+  expect(items).toHaveLength(3);
+
+  expect(items[0]).toHaveTextContent('New course available');
+  expect(items[0]).toHaveAttribute('data-notification-type', 'default');
+
+  expect(items[1]).toHaveTextContent('New resume available');
+  expect(items[1]).toHaveAttribute('data-notification-type', 'urgent');
+
+  expect(items[2]).toHaveTextContent('Urgent requirement - complete by EOD');
+  expect(items[2]).toHaveAttribute('data-notification-type', 'urgent');
+
+  const strongElement = items[2].querySelector('strong');
+  expect(strongElement).toBeInTheDocument();
+  expect(strongElement).toHaveTextContent('Urgent requirement');
+});
+
+test('logs a message when the close button is clicked', () => {
+  const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+  render(<Notifications displayDrawer notifications={notificationsList} />);
+  fireEvent.click(screen.getByLabelText(/close/i));
+  expect(logSpy).toHaveBeenCalledWith(
+    expect.stringMatching(/Close button has been clicked/i),
+  );
+  logSpy.mockRestore();
+});
+
+describe('NotificationItem markAsRead', () => {
+  test('calls markAsRead with its id when the item is clicked', () => {
+    const markAsReadMock = jest.fn();
+    const { container } = render(
+      <NotificationItem id={1} type="default" value="test" markAsRead={markAsReadMock} />,
+    );
+    container.querySelector('li').click();
+    expect(markAsReadMock).toHaveBeenCalledTimes(1);
+    expect(markAsReadMock).toHaveBeenCalledWith(1);
+  });
+});
