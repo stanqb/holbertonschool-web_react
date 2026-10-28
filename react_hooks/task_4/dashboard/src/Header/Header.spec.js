@@ -50,7 +50,7 @@ describe('Header logout section', () => {
         <Header />
       </newContext.Provider>,
     );
-    fireEvent.click(getByText('logout'));
+    fireEvent.click(getByText(/\(logout\)/i));
     expect(logOutSpy).toHaveBeenCalledTimes(1);
   });
 });
@@ -74,6 +74,6 @@ describe('Header functional component', () => {
       </newContext.Provider>,
     );
     expect(container.querySelector('#logoutSection')).toHaveTextContent('Welcome user@holberton.com (logout)');
-    expect(getByText('logout').tagName).toBe('A');
+    expect(getByText(/\(logout\)/i).tagName).toBe('A');
   });
 });

@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event';
 import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
@@ -72,7 +73,7 @@ describe('App functional component', () => {
       expect(await screen.findByText('ES6')).toBeInTheDocument();
       expect(screen.getByText('Webpack')).toBeInTheDocument();
 
-      fireEvent.click(screen.getByText('logout'));
+      fireEvent.click(screen.getByText(/\(logout\)/i));
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
       expect(coursesFetchCount()).toBe(1);
     });
@@ -84,7 +85,7 @@ describe('App functional component', () => {
 
       logInThroughForm();
       await screen.findByText('ES6');
-      fireEvent.click(screen.getByText('logout'));
+      fireEvent.click(screen.getByText(/\(logout\)/i));
 
       expect(screen.queryByText('New course available')).not.toBeInTheDocument();
       expect(screen.getAllByRole('listitem')).toHaveLength(2);
@@ -115,7 +116,7 @@ describe('App functional component', () => {
     test('logOut sets isLoggedIn to false and clears the email and password', async () => {
       const { container } = await renderApp();
       logInThroughForm();
-      fireEvent.click(screen.getByText('logout'));
+      fireEvent.click(screen.getByText(/\(logout\)/i));
       expect(container.querySelector('#logoutSection')).not.toBeInTheDocument();
       expect(screen.getByLabelText(/email/i)).toHaveValue('');
       expect(screen.getByLabelText(/password/i)).toHaveValue('');
@@ -143,5 +144,38 @@ describe('App functional component', () => {
       fireEvent.click(screen.getByRole('button', { name: /close/i }));
       expect(screen.queryByText(/no new notification for now/i)).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('App notifications through login and logout', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    mockAxios.get.mockImplementation((url) => {
+      if (url === '/notifications.json') return Promise.resolve({ data: notificationsData });
+      if (url === '/courses.json') return Promise.resolve({ data: coursesData });
+      return Promise.reject(new Error(`Unexpected URL: ${url}`));
+    });
+  });
+
+  afterEach(() => {
+    mockAxios.reset();
+    jest.restoreAllMocks();
+  });
+
+  test('notifications remain unchanged through login and logout', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    expect(await screen.findByText(/new course available/i)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/email/i), 'student@example.com');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.click(screen.getByDisplayValue('OK'));
+
+    expect(await screen.findByText('ES6')).toBeInTheDocument();
+    expect(screen.getByText(/new course available/i)).toBeInTheDocument();
+
+    await user.click(screen.getByText(/\(logout\)/i));
+    expect(screen.getByText(/new course available/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
   });
 });

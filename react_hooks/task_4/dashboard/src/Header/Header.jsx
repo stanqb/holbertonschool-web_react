@@ -18,9 +18,8 @@ function Header() {
       </div>
       {user.isLoggedIn && (
         <section id="logoutSection" className="px-3 -mt-6 mb-6">
-          Welcome <b>{user.email}</b> (
-          <a href="#" className="italic cursor-pointer" onClick={handleLogOut}>logout</a>
-          )
+          Welcome <b>{user.email}</b>{' '}
+          <a href="#" className="italic cursor-pointer" onClick={handleLogOut}>(logout)</a>
         </section>
       )}
     </>
