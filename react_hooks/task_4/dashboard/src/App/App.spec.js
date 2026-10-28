@@ -66,16 +66,16 @@ describe('App functional component', () => {
 
     test('retrieves the courses data whenever the user state changes', async () => {
       await renderApp();
-      expect(coursesFetchCount()).toBe(0);
+      await waitFor(() => expect(coursesFetchCount()).toBe(1));
 
       logInThroughForm();
-      await waitFor(() => expect(coursesFetchCount()).toBe(1));
+      await waitFor(() => expect(coursesFetchCount()).toBe(2));
       expect(await screen.findByText('ES6')).toBeInTheDocument();
       expect(screen.getByText('Webpack')).toBeInTheDocument();
 
       fireEvent.click(screen.getByText(/\(logout\)/i));
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
-      expect(coursesFetchCount()).toBe(1);
+      await waitFor(() => expect(coursesFetchCount()).toBe(3));
     });
 
     test('keeps deleted notifications deleted through login and logout', async () => {
@@ -121,7 +121,7 @@ describe('App functional component', () => {
       expect(screen.getByLabelText(/email/i)).toHaveValue('');
       expect(screen.getByLabelText(/password/i)).toHaveValue('');
       expect(screen.queryByText(/contact us/i)).not.toBeInTheDocument();
-      expect(coursesFetchCount()).toBe(1);
+      await waitFor(() => expect(coursesFetchCount()).toBe(3));
     });
   });
 

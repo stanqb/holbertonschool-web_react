@@ -33,11 +33,10 @@ describe('WithLogging HOC', () => {
     ).toBeInTheDocument();
   });
 
-  test('logs when the wrapped component is mounted and unmounted', () => {
+  test('does not log anything when the wrapped component is mounted and unmounted', () => {
     const { unmount } = render(<MockAppWithLogging />);
-    expect(logSpy).toHaveBeenCalledWith('Component MockApp is mounted');
     unmount();
-    expect(logSpy).toHaveBeenCalledWith('Component MockApp is going to unmount');
+    expect(logSpy).not.toHaveBeenCalled();
   });
 
   test('sets the displayName to WithLogging(NAME_OF_THE_WRAPPED_COMPONENT)', () => {
