@@ -101,19 +101,6 @@ describe('App markNotificationAsRead', () => {
   });
 });
 
-describe('App displayDrawer default state', () => {
-  test('hides the notifications panel by default, then opens and closes it', () => {
-    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-    render(<App />);
-    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText(/your notifications/i));
-    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText(/close/i));
-    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-    logSpy.mockRestore();
-  });
-});
-
 describe('App markNotificationAsRead full flow', () => {
   test('removes every notification and keeps the drawer usable when empty', () => {
     const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -131,6 +118,20 @@ describe('App markNotificationAsRead full flow', () => {
     expect(screen.queryByText(/no new notification for now/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByText(/your notifications/i));
     expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+    logSpy.mockRestore();
+  });
+});
+
+describe('App displayDrawer default state', () => {
+  test('displays the notifications panel by default, hides it and shows it again', () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    render(<App />);
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    fireEvent.click(screen.getByLabelText(/close/i));
+    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
     logSpy.mockRestore();
   });
 });

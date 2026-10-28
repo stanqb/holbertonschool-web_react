@@ -30,7 +30,7 @@ class App extends React.Component {
     this.logIn = this.logIn.bind(this);
     this.logOut = this.logOut.bind(this);
     this.state = {
-      displayDrawer: false,
+      displayDrawer: true,
       user: {
         email: '',
         password: '',
