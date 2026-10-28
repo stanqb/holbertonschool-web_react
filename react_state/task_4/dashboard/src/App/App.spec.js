@@ -57,15 +57,6 @@ describe('App component', () => {
     expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
   });
-
-  test('opens and closes the notifications panel using the local state', () => {
-    render(<App />);
-    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText(/your notifications/i));
-    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText(/close/i));
-    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-  });
 });
 
 describe('App login and logout through the state', () => {
@@ -106,6 +97,20 @@ describe('App markNotificationAsRead', () => {
     expect(screen.queryByText(/contact us/i)).not.toBeInTheDocument();
     logInThroughForm();
     expect(screen.getByText(/contact us/i)).toBeInTheDocument();
+    logSpy.mockRestore();
+  });
+});
+
+describe('App displayDrawer default state', () => {
+  test('displays the notifications panel by default, hides it and shows it again', () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    render(<App />);
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    fireEvent.click(screen.getByLabelText(/close/i));
+    expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
     logSpy.mockRestore();
   });
 });

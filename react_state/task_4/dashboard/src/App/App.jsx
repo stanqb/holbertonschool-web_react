@@ -31,7 +31,7 @@ class App extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.markNotificationAsRead = this.markNotificationAsRead.bind(this);
     this.state = {
-      displayDrawer: false,
+      displayDrawer: true,
       user: {
         email: '',
         password: '',
