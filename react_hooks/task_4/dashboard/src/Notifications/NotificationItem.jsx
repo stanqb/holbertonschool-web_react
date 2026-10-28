@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 const mobileClass = 'max-[912px]:border-b max-[912px]:border-black max-[912px]:py-[11px] max-[912px]:pl-2 max-[912px]:text-xl';
 
-function NotificationItem({
-  id,
+const NotificationItem = memo(function NotificationItem({
+  id = 0,
   type = 'default',
-  value,
-  html,
+  value = '',
+  html = null,
   markAsRead = () => {},
 }) {
   const colorClass = type === 'urgent'
@@ -34,7 +34,7 @@ function NotificationItem({
       {value}
     </li>
   );
-}
+});
 
 NotificationItem.propTypes = {
   id: PropTypes.number,
@@ -44,4 +44,4 @@ NotificationItem.propTypes = {
   markAsRead: PropTypes.func,
 };
 
-export default memo(NotificationItem);
+export default NotificationItem;
