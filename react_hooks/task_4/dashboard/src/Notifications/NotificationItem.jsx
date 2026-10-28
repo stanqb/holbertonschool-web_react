@@ -4,18 +4,20 @@ import PropTypes from 'prop-types';
 const mobileClass = 'max-[912px]:border-b max-[912px]:border-black max-[912px]:py-[11px] max-[912px]:pl-2 max-[912px]:text-xl';
 
 const NotificationItem = memo(function NotificationItem({
-  id = 0,
   type = 'default',
-  value = '',
   html = null,
-  markAsRead = () => {},
+  value = '',
+  markAsRead,
+  id = 0,
 }) {
   const colorClass = type === 'urgent'
     ? 'text-[color:var(--urgent-notification-item)]'
     : 'text-[color:var(--default-notification-item)]';
 
   const handleClick = () => {
-    markAsRead(id);
+    if (markAsRead) {
+      markAsRead(id);
+    }
   };
 
   if (html) {
