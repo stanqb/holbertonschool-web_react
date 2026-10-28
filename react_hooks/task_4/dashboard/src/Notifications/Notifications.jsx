@@ -3,20 +3,33 @@ import PropTypes from 'prop-types';
 import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
-function Notifications({
+const areEqual = (prevProps, nextProps) => (
+  (prevProps.notifications || []).length === (nextProps.notifications || []).length
+  && Boolean(prevProps.displayDrawer) === Boolean(nextProps.displayDrawer)
+);
+
+const Notifications = memo(function Notifications({
   notifications = [],
   displayDrawer = false,
-  handleDisplayDrawer = () => {},
-  handleHideDrawer = () => {},
-  markNotificationAsRead = () => {},
+  handleDisplayDrawer,
+  handleHideDrawer,
+  markNotificationAsRead,
 }) {
-  const titleAnimation = notifications.length > 0 && !displayDrawer ? ' animate-bounce' : '';
+  const titleAnimation = notifications.length > 0 && displayDrawer === false ? ' animate-bounce' : '';
+
+  const showDrawer = () => {
+    if (handleDisplayDrawer) handleDisplayDrawer();
+  };
+
+  const hideDrawer = () => {
+    if (handleHideDrawer) handleHideDrawer();
+  };
 
   return (
     <>
       <div
         className={`notification-title text-right mr-3 mt-1 cursor-pointer max-[912px]:mr-6${titleAnimation}`}
-        onClick={handleDisplayDrawer}
+        onClick={showDrawer}
       >
         Your notifications
       </div>
@@ -25,7 +38,7 @@ function Notifications({
           <button
             aria-label="Close"
             className="absolute top-1.5 right-1.5 cursor-pointer max-[912px]:top-3 max-[912px]:right-3"
-            onClick={handleHideDrawer}
+            onClick={hideDrawer}
           >
             <img src={closeButton} alt="close icon" className="w-3 h-3" />
           </button>
@@ -52,7 +65,7 @@ function Notifications({
       )}
     </>
   );
-}
+}, areEqual);
 
 Notifications.propTypes = {
   notifications: PropTypes.arrayOf(
@@ -69,9 +82,4 @@ Notifications.propTypes = {
   markNotificationAsRead: PropTypes.func,
 };
 
-const areEqual = (prevProps, nextProps) => (
-  (prevProps.notifications || []).length === (nextProps.notifications || []).length
-  && Boolean(prevProps.displayDrawer) === Boolean(nextProps.displayDrawer)
-);
-
-export default memo(Notifications, areEqual);
+export default Notifications;
