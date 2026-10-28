@@ -1,0 +1,99 @@
+import {
+  useCallback, useContext, useMemo, useState,
+} from 'react';
+import Notifications from '../Notifications/Notifications';
+import Header from '../Header/Header';
+import Login from '../Login/Login';
+import Footer from '../Footer/Footer';
+import CourseList from '../CourseList/CourseList';
+import BodySection from '../BodySection/BodySection';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import newContext from '../Context/context';
+import { getLatestNotification } from '../utils/utils';
+
+const notificationsList = [
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
+];
+
+const coursesList = [
+  { id: 1, name: 'ES6', credit: 60 },
+  { id: 2, name: 'Webpack', credit: 20 },
+  { id: 3, name: 'React', credit: 40 },
+];
+
+function App() {
+  const defaultContext = useContext(newContext);
+  const [displayDrawer, setDisplayDrawer] = useState(true);
+  const [user, setUser] = useState(defaultContext.user);
+  const [notifications, setNotifications] = useState(notificationsList);
+
+  const handleDisplayDrawer = useCallback(() => {
+    setDisplayDrawer(true);
+  }, []);
+
+  const handleHideDrawer = useCallback(() => {
+    setDisplayDrawer(false);
+  }, []);
+
+  const logIn = useCallback((email, password) => {
+    setUser({
+      email,
+      password,
+      isLoggedIn: true,
+    });
+  }, []);
+
+  const logOut = useCallback(() => {
+    setUser({
+      email: '',
+      password: '',
+      isLoggedIn: false,
+    });
+  }, []);
+
+  const markNotificationAsRead = useCallback((id) => {
+    console.log(`Notification ${id} has been marked as read`);
+    setNotifications((prevNotifications) => prevNotifications.filter(
+      (notification) => notification.id !== id,
+    ));
+  }, []);
+
+  const contextValue = useMemo(() => ({ user, logOut }), [user, logOut]);
+
+  return (
+    <newContext.Provider value={contextValue}>
+      <div className="App flex flex-col min-h-screen">
+        <div className="root-notifications absolute top-0 right-0 w-5/6 max-[912px]:w-full">
+          <Notifications
+            notifications={notifications}
+            displayDrawer={displayDrawer}
+            handleDisplayDrawer={handleDisplayDrawer}
+            handleHideDrawer={handleHideDrawer}
+            markNotificationAsRead={markNotificationAsRead}
+          />
+        </div>
+        <Header />
+        {user.isLoggedIn ? (
+          <BodySectionWithMarginBottom title="Course list">
+            <CourseList courses={coursesList} />
+          </BodySectionWithMarginBottom>
+        ) : (
+          <BodySectionWithMarginBottom title="Log in to continue">
+            <Login logIn={logIn} />
+          </BodySectionWithMarginBottom>
+        )}
+        <BodySection title="News from the School">
+          <p className="sr-only">Holberton School News goes here</p>
+          <p>
+            ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?
+          </p>
+        </BodySection>
+        <Footer />
+      </div>
+    </newContext.Provider>
+  );
+}
+
+export default App;
