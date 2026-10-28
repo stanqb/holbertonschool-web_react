@@ -87,11 +87,11 @@ function App() {
   }, [user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER, payload: true });
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER, payload: false });
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const logIn = useCallback((email, password) => {

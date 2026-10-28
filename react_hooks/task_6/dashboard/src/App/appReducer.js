@@ -40,9 +40,7 @@ export function appReducer(state = initialState, action = {}) {
     case APP_ACTIONS.TOGGLE_DRAWER:
       return {
         ...state,
-        displayDrawer: typeof action.payload === 'boolean'
-          ? action.payload
-          : state.displayDrawer === false,
+        displayDrawer: state.displayDrawer === false,
       };
 
     case APP_ACTIONS.MARK_NOTIFICATION_READ:
