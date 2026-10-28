@@ -75,7 +75,11 @@ function App() {
       }
     };
 
-    fetchCourses();
+    if (user.isLoggedIn) {
+      fetchCourses();
+    } else {
+      setCourses([]);
+    }
 
     return () => {
       isMounted = false;
