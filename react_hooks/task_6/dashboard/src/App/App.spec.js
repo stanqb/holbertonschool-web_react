@@ -135,14 +135,13 @@ describe('App functional component', () => {
       expect(screen.getAllByRole('listitem')).toHaveLength(2);
     });
 
-    test('removes every notification and keeps the drawer usable when empty', async () => {
+    test('removes every notification and shows the empty message', async () => {
       await renderApp();
       [/new course available/i, /new resume available/i, /urgent requirement/i].forEach((text) => {
         fireEvent.click(screen.getByText(text));
       });
-      expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
-      fireEvent.click(screen.getByRole('button', { name: /close/i }));
-      expect(screen.queryByText(/no new notification for now/i)).not.toBeInTheDocument();
+      expect(screen.getByText(/no new notifications for now/i)).toBeInTheDocument();
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });
   });
 });

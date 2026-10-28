@@ -40,7 +40,7 @@ describe('Notifications component', () => {
 
     test('renders the empty message when notifications is empty', () => {
       render(<Notifications displayDrawer notifications={[]} />);
-      expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+      expect(screen.getByText(/no new notifications for now/i)).toBeInTheDocument();
       expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });

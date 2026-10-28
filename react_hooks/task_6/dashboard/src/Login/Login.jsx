@@ -23,7 +23,7 @@ function Login({ logIn }) {
         <input
           type="email"
           id="email"
-          name="email"
+          name="user_email"
           value={email}
           onChange={handleChangeEmail}
           className="w-52 border border-black rounded max-[520px]:w-60 max-[520px]:mb-1"
@@ -32,7 +32,7 @@ function Login({ logIn }) {
         <input
           type="password"
           id="password"
-          name="password"
+          name="user_password"
           value={password}
           onChange={handleChangePassword}
           className="w-52 border border-black rounded max-[520px]:w-60 max-[520px]:mb-1"

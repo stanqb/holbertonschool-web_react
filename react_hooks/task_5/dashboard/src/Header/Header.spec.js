@@ -40,7 +40,7 @@ describe('Header logout section', () => {
     );
     expect(container.querySelector('#logoutSection')).toBeInTheDocument();
     expect(getByText(/welcome/i)).toBeInTheDocument();
-    expect(getByText('user@holberton.com')).toBeInTheDocument();
+    expect(getByText(/welcome user@holberton.com/i)).toBeInTheDocument();
   });
 
   test('calls logOut when clicking on the logout link', () => {
