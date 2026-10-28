@@ -14,6 +14,6 @@
 - `public/notifications.json` and `public/courses.json` hold the data previously hardcoded in `App`
 - `notifications` and `courses` start as empty arrays and are fetched with Axios inside `useEffect`
   - notifications: fetched once when `App` mounts (`[]` dependencies), the latest notification html comes from `getLatestNotification()`
-  - courses: fetched whenever the `user` state changes (`[user]` dependencies), only when the user is logged in (cleared on logout)
+  - courses: fetched whenever the `user` state changes (`[user]` dependencies)
 - Each effect uses `try/catch` (errors logged in development only) and a cleanup flag
 - Tests mock Axios with `jest-mock-axios` (`"^axios$": "jest-mock-axios"` in `moduleNameMapper`)
