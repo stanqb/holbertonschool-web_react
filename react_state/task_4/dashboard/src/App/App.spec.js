@@ -113,3 +113,24 @@ describe('App displayDrawer default state', () => {
     logSpy.mockRestore();
   });
 });
+
+describe('App markNotificationAsRead full flow', () => {
+  test('removes every notification and keeps the drawer usable when empty', () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    render(<App />);
+    fireEvent.click(screen.getByText(/your notifications/i));
+    const texts = [/new course available/i, /new resume available/i, /urgent requirement/i];
+    texts.forEach((text, index) => {
+      fireEvent.click(screen.getByText(text));
+      expect(screen.queryByText(text)).not.toBeInTheDocument();
+      expect(logSpy).toHaveBeenCalledWith(`Notification ${index + 1} has been marked as read`);
+      expect(screen.queryAllByRole('listitem')).toHaveLength(2 - index);
+    });
+    expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    expect(screen.queryByText(/no new notification for now/i)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+    logSpy.mockRestore();
+  });
+});
