@@ -46,15 +46,6 @@ test('renders 3 notification items with the appropriate text and types', () => {
   expect(strongElement).toHaveTextContent('Urgent requirement');
 });
 
-test('logs a message when the close button is clicked', () => {
-  const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-  render(<Notifications displayDrawer notifications={notificationsList} />);
-  fireEvent.click(screen.getByLabelText(/close/i));
-  expect(logSpy).toHaveBeenCalledWith(
-    expect.stringMatching(/Close button has been clicked/i),
-  );
-  logSpy.mockRestore();
-});
 
 describe('NotificationItem markAsRead', () => {
   test('calls markAsRead with its id when the item is clicked', () => {

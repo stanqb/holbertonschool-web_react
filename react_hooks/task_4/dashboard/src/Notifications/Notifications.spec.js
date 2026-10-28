@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import Notifications from './Notifications';
 import { getLatestNotification } from '../utils/utils';
 
@@ -46,14 +45,6 @@ describe('Notifications component', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });
 
-    test('logs a message when the close button is clicked', async () => {
-      const user = userEvent.setup();
-      const spy = jest.spyOn(console, 'log').mockImplementation(() => {});
-      render(<Notifications displayDrawer notifications={notificationsList} />);
-      await user.click(screen.getByLabelText(/close/i));
-      expect(spy).toHaveBeenCalledWith('Close button has been clicked');
-      spy.mockRestore();
-    });
   });
 });
 

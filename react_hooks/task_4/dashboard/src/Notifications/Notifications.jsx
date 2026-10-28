@@ -12,11 +12,6 @@ function Notifications({
 }) {
   const titleAnimation = notifications.length > 0 && !displayDrawer ? ' animate-bounce' : '';
 
-  const handleClose = () => {
-    console.log('Close button has been clicked');
-    handleHideDrawer();
-  };
-
   return (
     <>
       <div
@@ -30,7 +25,7 @@ function Notifications({
           <button
             aria-label="Close"
             className="absolute top-1.5 right-1.5 cursor-pointer max-[912px]:top-3 max-[912px]:right-3"
-            onClick={handleClose}
+            onClick={handleHideDrawer}
           >
             <img src={closeButton} alt="close icon" className="w-3 h-3" />
           </button>
