@@ -1,5 +1,6 @@
+import axios from 'axios';
 import {
-  useCallback, useContext, useMemo, useState,
+  useCallback, useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
@@ -11,23 +12,75 @@ import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBot
 import newContext from '../Context/context';
 import { getLatestNotification } from '../utils/utils';
 
-const notificationsList = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-];
+const toArray = (data, key) => {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data[key])) return data[key];
+  return [];
+};
 
-const coursesList = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
+const normalizeNotifications = (data) => toArray(data, 'notifications').map((notification) => (
+  notification.html
+    ? { ...notification, html: { __html: getLatestNotification() } }
+    : notification
+));
+
+const logDevelopmentError = (error) => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    console.error(error);
+  }
+};
 
 function App() {
   const defaultContext = useContext(newContext);
+  const removedNotificationIds = useRef(new Set());
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState(defaultContext.user);
-  const [notifications, setNotifications] = useState(notificationsList);
+  const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchNotifications = async () => {
+      try {
+        const { data } = await axios.get('/notifications.json');
+        if (isMounted) {
+          setNotifications(normalizeNotifications(data).filter(
+            (notification) => !removedNotificationIds.current.has(notification.id),
+          ));
+        }
+      } catch (error) {
+        logDevelopmentError(error);
+      }
+    };
+
+    fetchNotifications();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCourses = async () => {
+      try {
+        const { data } = await axios.get('/courses.json');
+        if (isMounted) {
+          setCourses(toArray(data, 'courses'));
+        }
+      } catch (error) {
+        logDevelopmentError(error);
+      }
+    };
+
+    fetchCourses();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -55,6 +108,7 @@ function App() {
 
   const markNotificationAsRead = useCallback((id) => {
     console.log(`Notification ${id} has been marked as read`);
+    removedNotificationIds.current.add(id);
     setNotifications((prevNotifications) => prevNotifications.filter(
       (notification) => notification.id !== id,
     ));
@@ -77,7 +131,7 @@ function App() {
         <Header />
         {user.isLoggedIn ? (
           <BodySectionWithMarginBottom title="Course list">
-            <CourseList courses={coursesList} />
+            <CourseList courses={courses} />
           </BodySectionWithMarginBottom>
         ) : (
           <BodySectionWithMarginBottom title="Log in to continue">
