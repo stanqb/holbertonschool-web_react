@@ -17,7 +17,7 @@ const coursesData = [
   { id: 3, name: 'React', credit: 40 },
 ];
 
-const coursesFetchCount = () => mockAxios.get.mock.calls.filter(([url]) => url === '/courses.json').length;
+const coursesFetchCount = () => mockAxios.get.mock.calls.filter(([url]) => url === 'http://localhost:5173/courses.json').length;
 
 const renderApp = async () => {
   const utils = render(<App />);
@@ -37,8 +37,8 @@ describe('App functional component', () => {
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     mockAxios.get.mockImplementation((url) => {
-      if (url === '/notifications.json') return Promise.resolve({ data: notificationsData });
-      if (url === '/courses.json') return Promise.resolve({ data: coursesData });
+      if (url === 'http://localhost:5173/notifications.json') return Promise.resolve({ data: notificationsData });
+      if (url === 'http://localhost:5173/courses.json') return Promise.resolve({ data: coursesData });
       return Promise.reject(new Error(`Unexpected URL: ${url}`));
     });
   });
@@ -59,23 +59,23 @@ describe('App functional component', () => {
   describe('data fetching', () => {
     test('retrieves the notifications data when the App loads', async () => {
       await renderApp();
-      expect(mockAxios.get).toHaveBeenCalledWith('/notifications.json');
+      expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
       expect(screen.getAllByRole('listitem')).toHaveLength(3);
       expect(screen.getByText('Urgent requirement').tagName).toBe('STRONG');
     });
 
     test('retrieves the courses data whenever the user state changes', async () => {
       await renderApp();
-      await waitFor(() => expect(coursesFetchCount()).toBe(1));
+      expect(coursesFetchCount()).toBe(0);
 
       logInThroughForm();
-      await waitFor(() => expect(coursesFetchCount()).toBe(2));
+      await waitFor(() => expect(coursesFetchCount()).toBe(1));
       expect(await screen.findByText('ES6')).toBeInTheDocument();
       expect(screen.getByText('Webpack')).toBeInTheDocument();
 
       fireEvent.click(screen.getByText(/\(logout\)/i));
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
-      await waitFor(() => expect(coursesFetchCount()).toBe(3));
+      expect(coursesFetchCount()).toBe(1);
     });
 
     test('keeps deleted notifications deleted through login and logout', async () => {
@@ -121,7 +121,7 @@ describe('App functional component', () => {
       expect(screen.getByLabelText(/email/i)).toHaveValue('');
       expect(screen.getByLabelText(/password/i)).toHaveValue('');
       expect(screen.queryByText(/contact us/i)).not.toBeInTheDocument();
-      await waitFor(() => expect(coursesFetchCount()).toBe(3));
+      expect(coursesFetchCount()).toBe(1);
     });
   });
 
@@ -151,8 +151,8 @@ describe('App notifications through login and logout', () => {
   beforeEach(() => {
     jest.spyOn(console, 'log').mockImplementation(() => {});
     mockAxios.get.mockImplementation((url) => {
-      if (url === '/notifications.json') return Promise.resolve({ data: notificationsData });
-      if (url === '/courses.json') return Promise.resolve({ data: coursesData });
+      if (url === 'http://localhost:5173/notifications.json') return Promise.resolve({ data: notificationsData });
+      if (url === 'http://localhost:5173/courses.json') return Promise.resolve({ data: coursesData });
       return Promise.reject(new Error(`Unexpected URL: ${url}`));
     });
   });

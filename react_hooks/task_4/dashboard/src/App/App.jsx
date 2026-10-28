@@ -12,6 +12,12 @@ import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBot
 import newContext from '../Context/context';
 import { getLatestNotification } from '../utils/utils';
 
+const API_BASE_URL = 'http://localhost:5173';
+const ENDPOINTS = {
+  notifications: `${API_BASE_URL}/notifications.json`,
+  courses: `${API_BASE_URL}/courses.json`,
+};
+
 const toArray = (data, key) => {
   if (Array.isArray(data)) return data;
   if (data && Array.isArray(data[key])) return data[key];
@@ -43,10 +49,10 @@ function App() {
 
     const fetchNotifications = async () => {
       try {
-        const { data } = await axios.get('/notifications.json');
+        const { data } = await axios.get(ENDPOINTS.notifications);
         if (isMounted) {
           setNotifications(normalizeNotifications(data).filter(
-            (notification) => !removedNotificationIds.current.has(notification.id),
+            (notification) => removedNotificationIds.current.has(notification.id) === false,
           ));
         }
       } catch (error) {
@@ -66,7 +72,7 @@ function App() {
 
     const fetchCourses = async () => {
       try {
-        const { data } = await axios.get('/courses.json');
+        const { data } = await axios.get(ENDPOINTS.courses);
         if (isMounted) {
           setCourses(toArray(data, 'courses'));
         }
@@ -75,12 +81,16 @@ function App() {
       }
     };
 
-    fetchCourses();
+    if (user.isLoggedIn) {
+      fetchCourses();
+    } else {
+      setCourses([]);
+    }
 
     return () => {
       isMounted = false;
     };
-  }, [user]);
+  }, [user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
