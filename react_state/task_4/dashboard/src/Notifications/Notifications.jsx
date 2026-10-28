@@ -70,7 +70,7 @@ Notifications.propTypes = {
       id: PropTypes.number.isRequired,
       type: PropTypes.string,
       value: PropTypes.string,
-      html: PropTypes.string,
+      html: PropTypes.shape({ __html: PropTypes.string }),
     }),
   ),
   displayDrawer: PropTypes.bool,

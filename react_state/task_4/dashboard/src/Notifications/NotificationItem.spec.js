@@ -10,7 +10,7 @@ const notificationsList = [
     id: 3,
     type: 'urgent',
     value: 'Urgent requirement - complete by EOD',
-    html: getLatestNotification(),
+    html: { __html: getLatestNotification() },
   },
 ];
 

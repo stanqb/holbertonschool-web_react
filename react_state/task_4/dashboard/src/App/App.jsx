@@ -12,7 +12,7 @@ import { getLatestNotification } from '../utils/utils';
 const notificationsList = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: getLatestNotification() },
+  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
 ];
 
 const coursesList = [
@@ -31,7 +31,7 @@ class App extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.markNotificationAsRead = this.markNotificationAsRead.bind(this);
     this.state = {
-      displayDrawer: true,
+      displayDrawer: false,
       user: {
         email: '',
         password: '',
@@ -122,6 +122,7 @@ class App extends React.Component {
             </BodySectionWithMarginBottom>
           )}
           <BodySection title="News from the School">
+            <p className="sr-only">Holberton School News goes here</p>
             <p>
               ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?
             </p>

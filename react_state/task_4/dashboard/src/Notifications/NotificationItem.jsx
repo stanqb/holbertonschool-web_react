@@ -25,7 +25,7 @@ class NotificationItem extends React.PureComponent {
         <li
           className={`${colorClass} ${mobileClass}`}
           data-notification-type={type}
-          dangerouslySetInnerHTML={{ __html: html }}
+          dangerouslySetInnerHTML={html}
           onClick={this.handleClick}
         />
       );
@@ -43,7 +43,7 @@ NotificationItem.propTypes = {
   id: PropTypes.number,
   type: PropTypes.string,
   value: PropTypes.string,
-  html: PropTypes.string,
+  html: PropTypes.shape({ __html: PropTypes.string }),
   markAsRead: PropTypes.func,
 };
 
